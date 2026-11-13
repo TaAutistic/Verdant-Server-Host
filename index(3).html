@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Verdant Server Host is a Windows desktop application in development for creating, configuring, and managing Minecraft Java Edition servers." />
+  <meta name="theme-color" content="#0b1714" />
+  <title>Verdant Server Host — Minecraft Hosting, Simplified</title>
+  <style>
+    :root { color-scheme: dark; --bg:#08120f; --surface:#11211c; --card:#142820; --line:#274439; --text:#eff9f3; --muted:#acc1b6; --primary:#80efab; --primary2:#c7ffd9; }
+    * { box-sizing: border-box; }
+    html {scroll-behavior:smooth;}
+    body {margin:0; background:var(--bg); color:var(--text); font-family:Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height:1.65; overflow-x:hidden;}
+    a {color:inherit; text-decoration:none;}
+    a:focus-visible {outline:2px solid var(--primary); outline-offset:4px; border-radius:4px;}
+    .background {position:absolute; inset:0 0 auto; height:760px; background:radial-gradient(ellipse at 75% 17%,rgba(67,186,114,.2),transparent 43%), radial-gradient(ellipse at 20% 35%,rgba(35,113,72,.13),transparent 48%); pointer-events:none; z-index:-1;}
+    .wrap {width:min(1100px, calc(100% - 40px)); margin:auto;}
+    header {border-bottom:1px solid rgba(176,236,199,.11); background:rgba(8,18,15,.75); backdrop-filter:blur(16px); position:sticky; top:0; z-index:10;}
+    header .wrap {display:flex; justify-content:space-between; gap:20px; align-items:center; min-height:75px;}
+    .brand {display:flex; gap:12px; align-items:center; font-size:18px; font-weight:800; letter-spacing:-.55px;}
+    .mark {width:36px; height:36px; display:grid; place-items:center; background:linear-gradient(145deg,#89f5b1,#38a36c); border-radius:11px; color:#092716; font-weight:900; font-size:21px; transform:rotate(-8deg);}
+    nav {display:flex; gap:28px; align-items:center; font-size:14px; font-weight:600; color:var(--muted);}
+    nav a:hover,footer a:hover {color:var(--primary);}
+    .nav-github {border:1px solid var(--line); padding:9px 16px; border-radius:10px; color:var(--text);}
+    .hero {padding:110px 0 95px; display:grid; grid-template-columns:1.15fr .85fr; gap:55px; align-items:center;}
+    .eyebrow {display:inline-flex; align-items:center; gap:10px; color:var(--primary2); background:#193527; border:1px solid #2d6242; border-radius:999px; padding:6px 14px; font-size:12px; font-weight:750; letter-spacing:.6px; text-transform:uppercase;}
+    .dot {width:7px; height:7px; background:var(--primary); border-radius:50%; box-shadow:0 0 12px var(--primary);}
+    h1 {font-size:clamp(46px,6vw,76px); line-height:1.05; letter-spacing:-3.7px; margin:25px 0 25px;}
+    h1 span {color:var(--primary);}
+    .lead {font-size:18px; line-height:1.8; color:var(--muted); max-width:600px; margin:0 0 35px;}
+    .buttons {display:flex; flex-wrap:wrap; gap:13px;}
+    .btn {display:inline-flex; justify-content:center; align-items:center; gap:9px; font-size:14px; font-weight:750; border-radius:12px; padding:13px 20px; border:1px solid var(--line); transition:transform .2s ease, background .2s ease;}
+    .btn:hover {transform:translateY(-2px);}
+    .btn.primary {background:var(--primary); color:#0b2618; border-color:var(--primary);}
+    .btn.secondary {background:#14261e; color:var(--text);}
+    .footnote {font-size:13px; color:#8ea69b; margin-top:20px;}
+    .preview {border:1px solid #325a47; padding:12px; border-radius:18px; background:linear-gradient(160deg,#203b2d,#0c1913); box-shadow:0 35px 100px rgba(0,0,0,.35), 0 0 65px rgba(60,180,97,.08); transform:rotate(2deg);}
+    .window {border:1px solid #365542; background:#0d1b16; border-radius:12px; overflow:hidden;}
+    .window-bar {border-bottom:1px solid #2c4337; padding:12px 15px; display:flex; align-items:center; gap:7px; color:#9db8a6; font-size:11px;}
+    .win-circle {height:7px; width:7px; background:#4b7659; border-radius:50%;}
+    .window-title {margin-left:8px;}
+    .window-content {padding:19px;}
+    .mock-title {font-size:12px; color:#8fad99; margin-bottom:12px;}
+    .server-row {background:#162b20; border:1px solid #355740; padding:14px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; gap:10px;}
+    .server-name {font-weight:750; font-size:13px;}
+    .server-version {font-size:11px; color:#a2baaa; margin-top:3px;}
+    .pill {background:#1d4632; color:#8ef0ae; border-radius:7px; font-size:11px; padding:5px 9px; white-space:nowrap;}
+    .metrics {display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+    .metric {background:#12251c; border:1px solid #2b4738; padding:15px; border-radius:10px;}
+    .metric-label {font-size:11px; color:#96ae9c;}
+    .metric-number {font-size:22px; font-weight:800; margin-top:7px; color:#d7f7df;}
+    .meter {height:5px; background:#31503d; border-radius:50px; margin-top:10px; overflow:hidden;}
+    .meter::before {content:""; display:block; width:57%; height:100%; background:#75d798; border-radius:50px;}
+    .preview-caption {text-align:center; font-size:11px; color:#9caf9d; padding-top:11px;}
+    section {padding:76px 0;}
+    .section-label {color:var(--primary); text-transform:uppercase; font-size:12px; font-weight:800; letter-spacing:2.1px;}
+    h2 {font-size:clamp(30px,4vw,42px); line-height:1.18; margin:12px 0 16px; letter-spacing:-1.5px;}
+    .section-intro {color:var(--muted); max-width:670px; margin-bottom:35px;}
+    .cards {display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+    .card {border:1px solid var(--line); background:linear-gradient(150deg,#152b22,#10221a); padding:26px; border-radius:16px;}
+    .icon {width:45px; height:45px; border-radius:13px; background:#254d35; color:var(--primary); display:grid; place-items:center; font-size:23px; margin-bottom:22px;}
+    .card h3 {font-size:17px; margin:0 0 9px;}
+    .card p {font-size:14px; color:var(--muted); margin:0;}
+    .notice {background:linear-gradient(120deg,#153424,#10251b); padding:32px 36px; border:1px solid #35664a; border-radius:18px; display:flex; justify-content:space-between; gap:22px; align-items:center;}
+    .notice h2 {font-size:27px; margin:7px 0;}
+    .notice p {color:var(--muted); margin:0; font-size:14px; max-width:600px;}
+    .status {white-space:nowrap; background:#264830; color:#aff8bf; padding:9px 14px; border-radius:99px; font-size:12px; font-weight:750;}
+    footer {border-top:1px solid var(--line); padding:36px 0 45px; color:#95b0a0; font-size:13px;}
+    footer .wrap {display:flex; justify-content:space-between; gap:30px; align-items:center;}
+    @media (max-width:850px) { .hero {grid-template-columns:1fr; padding:75px 0 40px; gap:40px;} .preview {transform:none; max-width:580px;} .cards {grid-template-columns:1fr 1fr;} nav {gap:13px;} }
+    @media (max-width:560px) {nav a:not(.nav-github) {display:none;} h1{letter-spacing:-2px;} .cards{grid-template-columns:1fr;} .notice{flex-direction:column; align-items:flex-start; padding:25px;} footer .wrap{flex-direction:column;align-items:flex-start;} .hero{padding-top:58px;} }
+  </style>
+</head>
+<body>
+<div class="background" aria-hidden="true"></div>
+<header>
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Verdant Server Host home"><span class="mark">V</span><span>Verdant <span style="color:#8cf3b0">Server Host</span></span></a>
+    <nav aria-label="Main navigation"><a href="#features">Features</a><a href="#development">Development</a><a class="nav-github" href="https://github.com/TaAutistic/Verdant-Server-Host" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav>
+  </div>
+</header>
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow"><span class="dot" aria-hidden="true"></span> In active development</div>
+      <h1>Minecraft servers.<br><span>Simplified.</span></h1>
+      <p class="lead">Verdant Server Host is a Windows desktop application in development to make creating, configuring, and managing Minecraft Java Edition servers easier—without the complexity.</p>
+      <div class="buttons"><a class="btn primary" href="#features">Explore planned features <span aria-hidden="true">↗</span></a><a class="btn secondary" href="https://github.com/TaAutistic/Verdant-Server-Host" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
+      <p class="footnote">Windows desktop app · Minecraft Java Edition · Public release not yet available</p>
+    </div>
+    <div class="preview" aria-label="Illustrative concept mockup, not an actual application screenshot">
+      <div class="window">
+        <div class="window-bar"><span class="win-circle"></span><span class="win-circle"></span><span class="win-circle"></span><span class="window-title">Verdant Server Host — Concept</span></div>
+        <div class="window-content">
+          <div class="mock-title">SERVER DASHBOARD</div>
+          <div class="server-row"><div><div class="server-name">Example Minecraft Server</div><div class="server-version">Java Edition · NeoForge · Example configuration</div></div><span class="pill">Concept UI</span></div>
+          <div class="metrics"><div class="metric"><div class="metric-label">Resource monitoring</div><div class="metric-number">RAM</div><div class="meter"></div></div><div class="metric"><div class="metric-label">Server controls</div><div class="metric-number">Start / Stop</div><div class="meter"></div></div></div>
+        </div>
+      </div>
+      <div class="preview-caption">Design illustration only — not a screenshot of a finished feature</div>
+    </div>
+  </div>
+  <section id="features" class="wrap">
+    <div class="section-label">Product vision</div>
+    <h2>Everything in one place.</h2>
+    <p class="section-intro">Verdant is being designed around a straightforward desktop workflow. These are development goals; individual features may not yet be implemented.</p>
+    <div class="cards">
+      <article class="card"><div class="icon" aria-hidden="true">▣</div><h3>Server management</h3><p>Create and manage server installations, edit configuration files, and control server processes from a desktop interface.</p></article>
+      <article class="card"><div class="icon" aria-hidden="true">⬡</div><h3>Mod management</h3><p>Plan, browse, install, and update compatible mods through supported integrations, including Modrinth and authorized CurseForge access.</p></article>
+      <article class="card"><div class="icon" aria-hidden="true">↻</div><h3>Automation & reliability</h3><p>Reduce repetitive setup work with version checks, dependency handling, download validation, and backup workflows.</p></article>
+    </div>
+  </section>
+  <section id="development" class="wrap">
+    <div class="notice">
+      <div><div class="section-label">Development status</div><h2>Building Verdant step by step.</h2><p>The application is not yet available as a stable public release. This site provides project information while implementation and testing continue. Integration with third-party platforms will follow their official policies and permissions.</p></div>
+      <span class="status">IN DEVELOPMENT</span>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><div>© <span id="year">2026</span> Verdant Server Host · Independent software project</div><div><a href="https://github.com/TaAutistic/Verdant-Server-Host" target="_blank" rel="noopener noreferrer">GitHub</a> · Not affiliated with Mojang, Microsoft, CurseForge or Modrinth.</div></div></footer>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
